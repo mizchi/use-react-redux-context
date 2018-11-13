@@ -74,5 +74,5 @@ typings/
 # Serverless directories
 .serverless
 
-
 dist
+.netlify

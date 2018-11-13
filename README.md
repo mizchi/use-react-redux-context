@@ -1,4 +1,6 @@
-# Minimum frontend
+# Minfront
+
+My minimum frontend boilerplate (201811)
 
 - yarn
 - parcel
@@ -6,7 +8,12 @@
 
 ## How to dev
 
-- `yarn dev`: Start asset server on `http://localhost:1234`
+```bash
+$ git clone git@github.com:mizchi-sandbox/minfront.git your_app_name
+$ yarn install
+```
+
+- `yarn dev`: Start server on `http://localhost:1234`
 - `yarn build`: Generate SPA to `dist`
 
 ## LICENSE
