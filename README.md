@@ -15,9 +15,15 @@ This code does **not** include framework, ci, and other (production ready) tools
 Clone and run.
 
 ```bash
-# Install node and yarn
-$ git clone --bare git@github.com:mizchi-sandbox/minfront.git your_app_name
+# ... Setup node and yarn
+$ git clone git@github.com:mizchi-sandbox/minfront.git --depth 1 myspa
+$ cd myspa
+$ git remote rm origin # optional
 $ yarn install
+$ yarn dev    # Start app server
+$ yarn build  # Build to dist
+$ yarn test   # Run jest
+$ yarn deploy # Deploy to netlify
 ```
 
 ## Build your own project like this
@@ -29,7 +35,7 @@ $ mkdir app_name; cd app_name
 $ yarn init -y; git init; gibo dump Node > .gitignore; yarn add typescript -D; yarn tsc --init
 ```
 
-Optional: Replace `{app_name}` `to your_app_name` and remove README so far.
+Optional: Replace `{app_name}` to `your-app-name` and remove README so far.
 
 ---
 
