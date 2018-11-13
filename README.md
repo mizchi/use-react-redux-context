@@ -5,9 +5,10 @@ My minimum frontend boilerplate 201811
 - yarn
 - parcel
 - typescript
+- jest
 - netlify
 
-This code does **not** include framework, test, ci, and other tools.
+This code does **not** include framework, ci, and other (production ready) tools.
 
 ## Bootstrap
 
@@ -28,16 +29,17 @@ $ mkdir app_name; cd app_name
 $ yarn init -y; git init; gibo dump Node > .gitignore; yarn add typescript -D; yarn tsc --init
 ```
 
+Optional: Replace `{app_name}` to your_app_name
+
 ---
 
 # {app_name}
 
 ## How to dev
 
-Optional: Replace `{app_name}` to your_app_name
-
-- `yarn dev`: Start server on `http://localhost:1234`
-- `yarn build`: Generate SPA to `dist`
+- `yarn dev`: Start application server on `http://localhost:1234`
+- `yarn build`: Generate `dist`
+- `yarn test`: Run jest
 - `yarn deploy`: Deploy to netlify (need netlify account)
 
 Just run it.

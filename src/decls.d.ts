@@ -1,1 +1,3 @@
-// declare module "<ignore-lib-name>";
+/* === Ignore === */
+
+// declare module "lib-name";
