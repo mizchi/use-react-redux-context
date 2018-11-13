@@ -12,7 +12,7 @@ This code does **not** include framework, ci, and other (production ready) tools
 
 ## Bootstrap
 
-Clone and run.
+Clone and Run
 
 ```bash
 # ... Setup node and yarn
