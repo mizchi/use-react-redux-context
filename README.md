@@ -29,7 +29,7 @@ $ mkdir app_name; cd app_name
 $ yarn init -y; git init; gibo dump Node > .gitignore; yarn add typescript -D; yarn tsc --init
 ```
 
-Optional: Replace `{app_name}` to your_app_name
+Optional: Replace `{app_name}` `to your_app_name` and remove README so far.
 
 ---
 
@@ -41,8 +41,6 @@ Optional: Replace `{app_name}` to your_app_name
 - `yarn build`: Generate `dist`
 - `yarn test`: Run jest
 - `yarn deploy`: Deploy to netlify (need netlify account)
-
-Just run it.
 
 ## LICENSE
 
