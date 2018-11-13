@@ -8,11 +8,9 @@ My minimum frontend boilerplate 201811
 - jest
 - netlify
 
-This code does **not** include framework, ci, and other (production ready) tools.
+This code does **not** include framework, lint, ci, and other (production) tools.
 
 ## Bootstrap
-
-Clone and Run
 
 ```bash
 # ... Setup node and yarn
@@ -26,7 +24,14 @@ $ yarn test   # Run jest
 $ yarn deploy # Deploy to netlify
 ```
 
-## Build your own project like this
+## Optional: Rocommended tools
+
+- https://github.com/prettier/prettier
+- https://github.com/paulirish/pwmetrics
+- https://github.com/xavdid/typed-install
+- https://github.com/saadq/lynt (at first linting)
+
+## Advanced: Build your own project like minfront
 
 This project is based on my handy shell command.
 
