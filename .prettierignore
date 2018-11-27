@@ -1,2 +1,0 @@
-/tsconfig.json # semantic indented
-/package.json  # confrict with yarn install

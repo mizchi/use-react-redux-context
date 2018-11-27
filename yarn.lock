@@ -3572,6 +3572,11 @@ hsla-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/hsla-regex/-/hsla-regex-1.0.0.tgz#c1ce7a3168c8c6614033a4b5f7877f3b225f9c38"
   integrity sha1-wc56MWjIxmFAM6S194d/OyJfnDg=
 
+htm@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/htm/-/htm-1.0.1.tgz#378e99a27da2b3712825313ac5c9c452bc276abc"
+  integrity sha512-xyqCZ7W60upCff/WAbfcIR4M17JzhRIAq2u9n69Zq/f/AyzC8H8LSY7FpDvkg9pTM8lsF1LGsINGUSXuSb/utw==
+
 html-comment-regex@^1.1.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/html-comment-regex/-/html-comment-regex-1.1.2.tgz#97d4688aeb5c81886a364faa0cad1dda14d433a7"
@@ -4741,6 +4746,23 @@ levn@~0.3.0:
   dependencies:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
+
+lit-element@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-0.5.0.tgz#88d42fba7bd8fab454f5bf2057973a5edee27010"
+  integrity sha1-iNQvunvY+rRU9b8gV5c6Xt7icBA=
+  dependencies:
+    lit-html "^0.10.0"
+
+lit-html@^0.10.0:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-0.10.2.tgz#53c846afcf91bb1e6623179ef22e327ab8ac0e0e"
+  integrity sha512-ue0pIX3Fj5gUsNSozdRQIb1MAgNqFQsHgvHE/FU34xyu9NN/af3EISr7Bb+vP9YeLXIA4vLLOoYp2Z22dVYhww==
+
+lit-html@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-0.13.0.tgz#d05e7fe8ade572432120339c451c614669788adf"
+  integrity sha512-p3R2ji/ucNVG5skguy8WufmSYIdMiTTb9ObUVYM2bOuvIXzDnUiePXGwP5BDbKssW1K6fw1Oj/M07FzdPLsTXw==
 
 load-json-file@^1.0.0:
   version "1.1.0"
