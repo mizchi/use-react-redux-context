@@ -1,11 +1,11 @@
 {
   "name": "use-react-redux-context",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "dev": "parcel demo/index.html --open",
-    "build": "tsc -p . --module umd -d",
+    "build": "tsc -p . --module commonjs -d",
     "demo": "parcel build demo/index.html",
     "test": "jest",
     "demo:deploy": "netlify deploy -d dist --prod"
