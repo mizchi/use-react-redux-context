@@ -1,4 +1,4 @@
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import { AnyAction, Dispatch } from "redux";
 import { ReactReduxContext } from "react-redux";
 import shallow from "shallow-equal/objects";
@@ -8,17 +8,22 @@ export function useDipatch<A extends AnyAction = AnyAction>(): Dispatch<A> {
   return useContext(DispatchContext);
 }
 
-export function Provider<T>(props: { scope: Scope; children: any }) {
-  const mapped = [...props.scope.connectorMap.values()].reduce(
+export function Provider(props: { scope: Scope; children: any }) {
+  const wrappedChildren = [...props.scope.connectorMap.values()].reduce(
     (el, ConnectedProvider) => {
       return <ConnectedProvider>{el}</ConnectedProvider>;
     },
     props.children
   );
+
+  useEffect(() => {
+    return () => props.scope.destroy();
+  }, []);
+
   const { store } = useContext(ReactReduxContext);
   return (
     <DispatchContext.Provider value={store.dispatch}>
-      {mapped}
+      {wrappedChildren}
     </DispatchContext.Provider>
   );
 }

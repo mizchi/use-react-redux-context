@@ -2,7 +2,7 @@ import React from "react";
 import { AnyAction, Dispatch } from "redux";
 export declare const DispatchContext: React.Context<any>;
 export declare function useDipatch<A extends AnyAction = AnyAction>(): Dispatch<A>;
-export declare function Provider<T>(props: {
+export declare function Provider(props: {
     scope: Scope;
     children: any;
 }): JSX.Element;

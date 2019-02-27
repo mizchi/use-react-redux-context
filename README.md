@@ -171,10 +171,6 @@ const B = scope.createContext(_state => {
 - `yarn demo`: Start application server on `http://localhost:1234`
 - `yarn demo:deploy`: Deploy to netlify (need netlify account)
 
-## TODO
-
-- Remove all mapped state after unmount
-
 ## LICENSE
 
 MIT
