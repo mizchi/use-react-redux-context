@@ -25,6 +25,31 @@ And I don't know good `ownProps` usages on `ReactRedux.connect`.
 
 ## How to use
 
+Minimum conceptual code
+
+```tsx
+import { Provider as ContextProvider, Scope } from "use-react-redux-context";
+import { Provider as ReactReduxProvider } from "react-redux";
+
+const scope = new Scope();
+const RootStateContext = scope.createContext(s => s);
+const All = () => {
+  const all = useContext(RootStateContext);
+  return <pre>{JSON.stringify(all)}</pre>;
+};
+
+const store = createStore(reducer); // create your reducer
+const el = (
+  <ReactReduxProvider store={store}>
+    <ContextProvider scope={scope}>
+      <All />
+    </ContextProvider>
+  </ReactReduxProvider>
+);
+```
+
+Working code
+
 ```tsx
 import React, { useContext, useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
