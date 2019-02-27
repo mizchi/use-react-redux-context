@@ -8,7 +8,6 @@ $ yarn add react react-dom redux react-redux
 $ yarn add use-react-redux-context
 # or npm install --save use-react-redux-context
 yarn add @types/react @types/redux @types/react-redux -D # for typescript
-
 ```
 
 ## Concept
@@ -27,10 +26,11 @@ And I don't know good `ownProps` usages on `ReactRedux.connect`.
 ## How to use
 
 ```tsx
-import React, { useContext, useCallback } from "react";
+import React, { useContext, useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { createStore, combineReducers, Reducer } from "redux";
-import { Provider, Scope } from "../index";
+import { Provider as ReactReduxProvider } from "react-redux";
+import { Provider as ContextProvider, Scope } from "use-react-redux-context";
 
 // Write your own reducer
 
@@ -87,9 +87,11 @@ const store = createStore(rootReducer);
 function App() {
   return (
     // Provider expand all scope's context
-    <Provider store={store} scope={scope}>
-      <Counter />
-    </Provider>
+    <ReactReduxProvider store={store}>
+      <ContextProvider scope={scope}>
+        <Counter />
+      </ContextProvider>
+    </ReactReduxProvider>
   );
 }
 
@@ -108,6 +110,7 @@ ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
 
 - Bind action helper
 - Write test
+- Remove all mapped state after unmount
 
 ## LICENSE
 

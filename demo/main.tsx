@@ -1,12 +1,8 @@
 import React, { useContext, useCallback } from "react";
 import ReactDOM from "react-dom";
-import {
-  createStore,
-  combineReducers,
-  Reducer,
-  bindActionCreators
-} from "redux";
-import { Provider, Scope, useDipatch } from "../index";
+import { createStore, combineReducers, Reducer } from "redux";
+import { Provider as ReactReduxProvider } from "react-redux";
+import { Provider as ContextProvider, Scope } from "../index";
 
 type Foo = {
   value: number;
@@ -95,11 +91,13 @@ const store = createStore(rootReducer);
 
 function App() {
   return (
-    <Provider store={store} scope={scope}>
-      <Foo />
-      <Bar />
-      <Baz />
-    </Provider>
+    <ReactReduxProvider store={store}>
+      <ContextProvider scope={scope}>
+        <Foo />
+        <Bar />
+        <Baz />
+      </ContextProvider>
+    </ReactReduxProvider>
   );
 }
 

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Store, AnyAction, Dispatch } from "redux";
-import { ReactReduxContext, Provider as ReactReduxProvider } from "react-redux";
+import { ReactReduxContext } from "react-redux";
 import shallow from "shallow-equal/objects";
 
 export const DispatchContext = React.createContext(null as any);
@@ -8,23 +8,18 @@ export function useDipatch<A extends AnyAction = AnyAction>(): Dispatch<A> {
   return useContext(DispatchContext);
 }
 
-export function Provider<T>(props: {
-  store: Store<T>;
-  scope: Scope;
-  children: any;
-}) {
+export function Provider<T>(props: { scope: Scope; children: any }) {
   const mapped = [...props.scope.connectorMap.values()].reduce(
     (el, ConnectedProvider) => {
       return <ConnectedProvider>{el}</ConnectedProvider>;
     },
     props.children
   );
+  const { store } = useContext(ReactReduxContext);
   return (
-    <ReactReduxProvider store={props.store}>
-      <DispatchContext.Provider value={props.store.dispatch}>
-        {mapped}
-      </DispatchContext.Provider>
-    </ReactReduxProvider>
+    <DispatchContext.Provider value={store.dispatch}>
+      {mapped}
+    </DispatchContext.Provider>
   );
 }
 
