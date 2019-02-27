@@ -157,7 +157,7 @@ const B = scope.createContext(_state => {
   // alternative: with memoized keys map
   // const actions = useBindActions({ increment, decrement }, { increment: [state.value] });
 
-  // recomend spreading for shallow equal
+  // recommend spreading for shallow equal
   return { ...actions };
 });
 ```
