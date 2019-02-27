@@ -7,6 +7,7 @@ Alternative `ReactRedux.connect()` by `useContext()` for performance.
 $ yarn add react react-dom redux react-redux
 $ yarn add use-react-redux-context
 # or npm install --save use-react-redux-context
+yarn add @types/react @types/redux @types/react-redux -D # for typescript
 
 ```
 
