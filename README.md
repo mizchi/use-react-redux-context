@@ -1,4 +1,27 @@
-# react-redux-use-context
+# use-react-redux-context
+
+Alternative `ReactRedux.connect()` by `useContext()` for performance.
+
+```bash
+# peer deps
+$ yarn add react react-dom redux react-redux
+$ yarn add use-react-redux-context
+# or npm install --save use-react-redux-context
+
+```
+
+## Concept
+
+- Pre-defined connected React.Context with mapState (no own props)
+- Create bound actions by useCallback
+- Emit render by shallow equal comparation
+- TypeScript friendly
+
+## Why not `useContext(ReactReduxContext)` of `react-redux@6`
+
+Just `React.useContext(ReactReduxContext)` emits rendering by all state update. Pre-defined contexts and reducers are good for performance.
+
+And I don't know good `ownProps` usages on `ReactRedux.connect`.
 
 ## How to use
 
@@ -6,27 +29,22 @@
 import React, { useContext, useCallback } from "react";
 import ReactDOM from "react-dom";
 import { createStore, combineReducers, Reducer } from "redux";
-import { Provider, Scope, useDipatch } from "use-redux-context";
+import { Provider, Scope } from "../index";
+
+// Write your own reducer
 
 type Foo = {
   value: number;
 };
 
-type Bar = {
-  mes: string;
-};
-
-export type RootState = {
+type RootState = {
   foo: Foo;
-  bar: Bar;
 };
-
-const initialFoo: Foo = { value: 0 };
 
 type IncrementAction = { type: "increment" };
-type FooAction = IncrementAction;
-function foo(state: Foo = initialFoo, action: FooAction): Foo {
-  console.log("update foo", state);
+type Action = IncrementAction;
+
+function foo(state: Foo = { value: 0 }, action: Action): Foo {
   switch (action.type) {
     case "increment": {
       return { value: state.value + 1 };
@@ -41,78 +59,54 @@ function increment(): IncrementAction {
   return { type: "increment" };
 }
 
-const initialBar: Bar = { mes: "hello" };
-function bar(state: Bar = initialBar, action: any): Bar {
-  console.log("update bar", state);
-  switch (action.type) {
-    default: {
-      return state;
-    }
-  }
-}
+// Build connected React.Context
 
-const scope = new Scope<RootState>();
-
-const FooContext = scope.createContext(state => {
-  return state.foo;
-});
-
-const BarContext = scope.createContext((state, dispatch) => {
+const scope = new Scope<RootState>(); // scope expand all contexts
+const FooContext = scope.createContext((state, dispatch) => {
+  // this useCallback is under NewContext rendering hook context
   const inc = useCallback(() => dispatch(increment()), []);
-  return { ...state.bar, inc };
+  // emit render by shallow equal comparation
+  return { ...state.foo, inc };
 });
 
-const BazContext = scope.createContext((_state, dispatch) => {
-  const inc = useCallback(() => dispatch(increment()), []);
-  return { inc };
-});
-
-function Foo() {
-  console.log("render foo");
+function Counter() {
+  // This is React.useContext, not library function
   const foo = useContext(FooContext);
-  return <div>value: {foo.value}</div>;
-}
-
-function Bar() {
-  console.log("render bar");
-  const bar = useContext(BarContext);
   return (
     <div>
-      mes: {bar.mes}
-      <button onClick={() => bar.inc()}>incerment:foo</button>
+      value: {foo.value}
+      <button onClick={foo.inc}>+1</button>
     </div>
   );
 }
 
-function Baz() {
-  console.log("render baz");
-  const baz = useContext(BazContext);
-  return <button onClick={() => baz.inc()}>incerment:foo from baz</button>;
-}
-
-const rootReducer: Reducer<RootState> = combineReducers({ foo, bar });
+const rootReducer: Reducer<RootState> = combineReducers({ foo });
 const store = createStore(rootReducer);
 
 function App() {
   return (
+    // Provider expand all scope's context
     <Provider store={store} scope={scope}>
-      <Foo />
-      <Bar />
-      <Baz />
+      <Counter />
     </Provider>
   );
 }
 
-declare var document: any;
+// @ts-ignore
 ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
 ```
 
 ## How to dev
 
-- `yarn dev`: Start application server on `http://localhost:1234`
-- `yarn build`: Generate `dist`
+- `yarn build`: Build `index.js`
 - `yarn test`: Run jest
-- `yarn deploy`: Deploy to netlify (need netlify account)
+- `yarn demo`: Start application server on `http://localhost:1234`
+- `yarn demo:deploy`: Deploy to netlify (need netlify account)
+
+## TODO
+
+- Bind action helper
+- Write test
 
 ## LICENSE
 

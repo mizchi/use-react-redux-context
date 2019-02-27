@@ -1,6 +1,6 @@
 {
-  "name": "react-redux-use-context",
-  "version": "0.1.0",
+  "name": "use-react-redux-context",
+  "version": "0.1.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -33,5 +33,9 @@
   },
   "dependencies": {
     "shallow-equal": "^1.1.0"
-  }
+  },
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ]
 }
