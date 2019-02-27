@@ -1,11 +1,11 @@
 {
   "name": "use-react-redux-context",
   "version": "0.2.2",
-  "main": "index.js",
+  "main": "index.min.js",
   "license": "MIT",
   "scripts": {
     "dev": "parcel demo/index.html --open",
-    "build": "tsc -p . --module commonjs -d",
+    "build": "tsc -p . --module commonjs -d && terser --compress --mangle -- index.js > index.min.js",
     "demo": "parcel build demo/index.html",
     "test": "jest",
     "demo:deploy": "netlify deploy -d dist --prod"
@@ -22,6 +22,7 @@
     "react-dom": "^16.8.3",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
+    "terser": "^3.16.1",
     "ts-jest": "^23.10.4",
     "typescript": "^3.1.3"
   },
@@ -36,6 +37,7 @@
   },
   "files": [
     "index.js",
+    "index.min.js",
     "index.d.ts"
   ]
 }

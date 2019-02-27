@@ -44,3 +44,4 @@ dist
 .netlify
 
 index.js
+index.min.js
