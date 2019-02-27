@@ -148,7 +148,9 @@ Create function by action and actionMap (with `useCallback` and its `memoizedKey
 import { useBindAction, useBindActions } from "use-react-redux-context";
 
 const A = scope.createContext(state => {
-  const inc = useBindAction(increment, []);
+  const inc = useBindAction(increment);
+  // with memoized keys
+  // const inc = useBindAction(() => ({type: 'increment', payload: state.value}), [state.value]);
   return { ...state.a, inc };
 });
 
