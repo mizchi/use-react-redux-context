@@ -1,6 +1,6 @@
 {
   "name": "use-react-redux-context",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "index.min.js",
   "license": "MIT",
   "scripts": {
