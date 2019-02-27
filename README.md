@@ -1,50 +1,111 @@
-# Minfront
+# react-redux-use-context
 
-My minimum frontend boilerplate 201811
+## How to use
 
-- yarn
-- parcel
-- typescript
-- jest
-- netlify
+```tsx
+import React, { useContext, useCallback } from "react";
+import ReactDOM from "react-dom";
+import { createStore, combineReducers, Reducer } from "redux";
+import { Provider, Scope, useDipatch } from "use-redux-context";
 
-This code does **not** include framework, lint, ci, and other (production) tools.
+type Foo = {
+  value: number;
+};
 
-## Bootstrap
+type Bar = {
+  mes: string;
+};
 
-```bash
-# ... Setup node and yarn
-$ git clone git@github.com:mizchi-sandbox/minfront.git --depth 1 myspa
-$ cd myspa
-$ git remote rm origin # optional
-$ yarn install
-$ yarn dev    # Start app server
-$ yarn build  # Build to dist
-$ yarn test   # Run jest
-$ yarn deploy # Deploy to netlify
+export type RootState = {
+  foo: Foo;
+  bar: Bar;
+};
+
+const initialFoo: Foo = { value: 0 };
+
+type IncrementAction = { type: "increment" };
+type FooAction = IncrementAction;
+function foo(state: Foo = initialFoo, action: FooAction): Foo {
+  console.log("update foo", state);
+  switch (action.type) {
+    case "increment": {
+      return { value: state.value + 1 };
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+function increment(): IncrementAction {
+  return { type: "increment" };
+}
+
+const initialBar: Bar = { mes: "hello" };
+function bar(state: Bar = initialBar, action: any): Bar {
+  console.log("update bar", state);
+  switch (action.type) {
+    default: {
+      return state;
+    }
+  }
+}
+
+const scope = new Scope<RootState>();
+
+const FooContext = scope.createContext(state => {
+  return state.foo;
+});
+
+const BarContext = scope.createContext((state, dispatch) => {
+  const inc = useCallback(() => dispatch(increment()), []);
+  return { ...state.bar, inc };
+});
+
+const BazContext = scope.createContext((_state, dispatch) => {
+  const inc = useCallback(() => dispatch(increment()), []);
+  return { inc };
+});
+
+function Foo() {
+  console.log("render foo");
+  const foo = useContext(FooContext);
+  return <div>value: {foo.value}</div>;
+}
+
+function Bar() {
+  console.log("render bar");
+  const bar = useContext(BarContext);
+  return (
+    <div>
+      mes: {bar.mes}
+      <button onClick={() => bar.inc()}>incerment:foo</button>
+    </div>
+  );
+}
+
+function Baz() {
+  console.log("render baz");
+  const baz = useContext(BazContext);
+  return <button onClick={() => baz.inc()}>incerment:foo from baz</button>;
+}
+
+const rootReducer: Reducer<RootState> = combineReducers({ foo, bar });
+const store = createStore(rootReducer);
+
+function App() {
+  return (
+    <Provider store={store} scope={scope}>
+      <Foo />
+      <Bar />
+      <Baz />
+    </Provider>
+  );
+}
+
+declare var document: any;
+ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
 ```
-
-## Optional: Rocommended tools
-
-- https://github.com/prettier/prettier
-- https://github.com/paulirish/pwmetrics
-- https://github.com/xavdid/typed-install
-- https://github.com/saadq/lynt (at first linting)
-
-## Advanced: Build your own project like minfront
-
-This project is based on my handy shell command.
-
-```
-$ mkdir app_name; cd app_name
-$ yarn init -y; git init; gibo dump Node > .gitignore; yarn add typescript -D; yarn tsc --init
-```
-
-Optional: Replace `{app_name}` to `your-app-name` and remove README so far.
-
----
-
-# {app_name}
 
 ## How to dev
 

@@ -1,7 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useCallback } from "react";
 import ReactDOM from "react-dom";
-import { createStore, combineReducers, Reducer } from "redux";
-import { Provider, Scope, useDipatch } from "./react-redux-context-provider";
+import {
+  createStore,
+  combineReducers,
+  Reducer,
+  bindActionCreators
+} from "redux";
+import { Provider, Scope, useDipatch } from "../index";
 
 type Foo = {
   value: number;
@@ -18,7 +23,8 @@ export type RootState = {
 
 const initialFoo: Foo = { value: 0 };
 
-type FooAction = { type: "increment" };
+type IncrementAction = { type: "increment" };
+type FooAction = IncrementAction;
 function foo(state: Foo = initialFoo, action: FooAction): Foo {
   console.log("update foo", state);
   switch (action.type) {
@@ -29,6 +35,10 @@ function foo(state: Foo = initialFoo, action: FooAction): Foo {
       return state;
     }
   }
+}
+
+function increment(): IncrementAction {
+  return { type: "increment" };
 }
 
 const initialBar: Bar = { mes: "hello" };
@@ -42,8 +52,20 @@ function bar(state: Bar = initialBar, action: any): Bar {
 }
 
 const scope = new Scope<RootState>();
-const FooContext = scope.createContext<Foo>(s => s.foo);
-const BarContext = scope.createContext<Bar>(s => s.bar);
+
+const FooContext = scope.createContext(state => {
+  return state.foo;
+});
+
+const BarContext = scope.createContext((state, dispatch) => {
+  const inc = useCallback(() => dispatch(increment()), []);
+  return { ...state.bar, inc };
+});
+
+const BazContext = scope.createContext((_state, dispatch) => {
+  const inc = useCallback(() => dispatch(increment()), []);
+  return { inc };
+});
 
 function Foo() {
   console.log("render foo");
@@ -54,15 +76,18 @@ function Foo() {
 function Bar() {
   console.log("render bar");
   const bar = useContext(BarContext);
-  const dispatch = useDipatch();
   return (
     <div>
       mes: {bar.mes}
-      <button onClick={() => dispatch({ type: "increment" })}>
-        incerment:foo
-      </button>
+      <button onClick={() => bar.inc()}>incerment:foo</button>
     </div>
   );
+}
+
+function Baz() {
+  console.log("render baz");
+  const baz = useContext(BazContext);
+  return <button onClick={() => baz.inc()}>incerment:foo from baz</button>;
 }
 
 const rootReducer: Reducer<RootState> = combineReducers({ foo, bar });
@@ -73,8 +98,10 @@ function App() {
     <Provider store={store} scope={scope}>
       <Foo />
       <Bar />
+      <Baz />
     </Provider>
   );
 }
 
+declare var document: any;
 ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
