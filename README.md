@@ -124,6 +124,44 @@ function App() {
 ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
 ```
 
+## API
+
+### `useDispatch`
+
+Get `store.dispatch` Function
+
+```tsx
+import { useDispatch } from "use-react-redux-context";
+function X() {
+  const dispatch = useDispatch();
+  return (
+    <button onClick={() => disptach({ type: "my-action" })}>my action</button>
+  );
+}
+```
+
+### `useBindAction`, `useBindActions`
+
+Create function by action and actionMap (with `useCallback` and its `memoizedKeys`)
+
+```tsx
+import { useBindAction, useBindActions } from "use-react-redux-context";
+
+const A = scope.createContext(state => {
+  const inc = useBindAction(increment, []);
+  return { ...state.a, inc };
+});
+
+const B = scope.createContext(_state => {
+  const actions = useBindActions({ increment, decrement });
+  // alternative: with memoized keys map
+  // const actions = useBindActions({ increment, decrement }, { increment: [state.value] });
+
+  // recomend spreading for shallow equal
+  return { ...actions };
+});
+```
+
 ## How to dev
 
 - `yarn build`: Build `index.js`
@@ -133,8 +171,6 @@ ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
 
 ## TODO
 
-- Bind action helper
-- Write test
 - Remove all mapped state after unmount
 
 ## LICENSE

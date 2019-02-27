@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Store, AnyAction, Dispatch } from "redux";
+import React, { useContext, useCallback } from "react";
+import { AnyAction, Dispatch } from "redux";
 import { ReactReduxContext } from "react-redux";
 import shallow from "shallow-equal/objects";
 
@@ -61,4 +61,32 @@ export class Scope<S = any, A extends AnyAction = AnyAction> {
   destroy() {
     this.lastStateMap.clear();
   }
+}
+
+export function useBindAction<F extends Function>(
+  action: F,
+  keys: any[] = []
+): F {
+  const dispatch = useDipatch();
+  const fn = (...args: any) => dispatch(action(...args) as any);
+  return useCallback(fn, keys) as any;
+}
+
+export function useBindActions<
+  FM extends { [key: string]: Function },
+  K extends keyof FM
+>(actionMap: FM, keysMap: { [key in K]: Array<any> } = {} as any): FM {
+  const dispatch = useDipatch();
+  return Object.entries(actionMap).reduce(
+    (acc, [key, action]) => {
+      return {
+        ...acc,
+        [key]: useCallback(
+          (...args: any) => dispatch(action(...args) as any),
+          keysMap[key as K] || []
+        )
+      };
+    },
+    {} as FM
+  );
 }

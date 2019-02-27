@@ -1,3 +1,4 @@
+import assert from "assert";
 import React, { useContext } from "react";
 import ReactDOM from "react-dom";
 import { Provider as ReactReduxProvider } from "react-redux";
@@ -8,6 +9,16 @@ import {
   useBindAction,
   useBindActions
 } from "../index";
+
+// --- test counter
+let fooReducerCallCount = 0;
+let barReducerCallCount = 0;
+
+let fooRenderCallCount = 0;
+let barRenderCallCount = 0;
+let bazRenderCallCount = 0;
+
+// --- app
 
 type Foo = {
   value: number;
@@ -29,7 +40,7 @@ type DecrementAction = { type: "decrement" };
 
 type FooAction = IncrementAction | DecrementAction;
 function foo(state: Foo = initialFoo, action: FooAction): Foo {
-  console.log("update foo", state);
+  fooReducerCallCount += 1;
   switch (action.type) {
     case "increment": {
       return { value: state.value + 1 };
@@ -53,7 +64,7 @@ function decrement(): DecrementAction {
 
 const initialBar: Bar = { mes: "hello" };
 function bar(state: Bar = initialBar, action: any): Bar {
-  console.log("update bar", state);
+  barReducerCallCount += 1;
   switch (action.type) {
     default: {
       return state;
@@ -80,13 +91,13 @@ const BazContext = scope.createContext(_state => {
 });
 
 function Foo() {
-  console.log("render foo");
+  fooRenderCallCount += 1;
   const foo = useContext(FooContext);
   return <div>value: {foo.value}</div>;
 }
 
 function Bar() {
-  console.log("render bar");
+  barRenderCallCount += 1;
   const bar = useContext(BarContext);
   return (
     <div>
@@ -97,12 +108,16 @@ function Bar() {
 }
 
 function Baz() {
-  console.log("render baz");
+  bazRenderCallCount += 1;
   const baz = useContext(BazContext);
   return (
     <>
-      <button onClick={baz.increment}>incerment from baz</button>
-      <button onClick={baz.decrement}>decrement from baz</button>
+      <button onClick={baz.increment} data-testid="baz-inc">
+        incerment from baz
+      </button>
+      <button onClick={baz.decrement} data-testid="baz-dec">
+        decrement from baz
+      </button>
     </>
   );
 }
@@ -122,4 +137,27 @@ function App() {
   );
 }
 
-ReactDOM.render(<App />, document.querySelector(".root") as HTMLDivElement);
+test("supress render", () => {
+  const root = document.createElement("div");
+  document.body.appendChild(root);
+
+  ReactDOM.render(<App />, root);
+  assert.equal(fooReducerCallCount, 3);
+  assert.equal(barReducerCallCount, 3);
+
+  assert.equal(fooRenderCallCount, 1);
+  assert.equal(barRenderCallCount, 1);
+  assert.equal(bazRenderCallCount, 1);
+
+  // emit increment
+  store.dispatch({ type: "increment" });
+
+  // call all counter
+  assert.equal(fooReducerCallCount, 4);
+  assert.equal(barReducerCallCount, 4);
+
+  // update only foo component
+  assert.equal(fooRenderCallCount, 2);
+  assert.equal(barRenderCallCount, 1);
+  assert.equal(bazRenderCallCount, 1);
+});

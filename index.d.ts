@@ -12,3 +12,9 @@ export declare class Scope<S = any, A extends AnyAction = AnyAction> {
     createContext<Mapped>(mapState: (state: S, dispatch: Dispatch<A>) => Mapped): React.Context<Mapped>;
     destroy(): void;
 }
+export declare function useBindAction<F extends Function>(action: F, keys?: any[]): F;
+export declare function useBindActions<FM extends {
+    [key: string]: Function;
+}, K extends keyof FM>(actionMap: FM, keysMap?: {
+    [key in K]: Array<any>;
+}): FM;
