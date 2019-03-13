@@ -4,7 +4,7 @@ import { ReactReduxContext } from "react-redux";
 import shallow from "shallow-equal/objects";
 
 export const DispatchContext = React.createContext(null as any);
-export function useDipatch<A extends AnyAction = AnyAction>(): Dispatch<A> {
+export function useDispatch<A extends AnyAction = AnyAction>(): Dispatch<A> {
   return useContext(DispatchContext);
 }
 
@@ -72,7 +72,7 @@ export function useBindAction<F extends Function>(
   action: F,
   keys: any[] = []
 ): F {
-  const dispatch = useDipatch();
+  const dispatch = useDispatch();
   const fn = (...args: any) => dispatch(action(...args) as any);
   return useCallback(fn, keys) as any;
 }
@@ -81,7 +81,7 @@ export function useBindActions<
   FM extends { [key: string]: Function },
   K extends keyof FM
 >(actionMap: FM, keysMap: { [key in K]: Array<any> } = {} as any): FM {
-  const dispatch = useDipatch();
+  const dispatch = useDispatch();
   return Object.entries(actionMap).reduce(
     (acc, [key, action]) => {
       return {
