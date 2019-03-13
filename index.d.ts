@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { AnyAction, Dispatch } from "redux";
 export declare const DispatchContext: React.Context<any>;
 export declare function useDipatch<A extends AnyAction = AnyAction>(): Dispatch<A>;
